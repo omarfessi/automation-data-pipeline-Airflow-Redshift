@@ -29,13 +29,14 @@ NODE_TYPE           = dc2.large
 ## Docker image for Airflow dependencies 
 As Airflow continues to develop and becomes hard to keep its versions and dependencies stable, I choosed not to install Airflow, rather I use a Docker version of it to wrap up all its dependencies and make Aiflow works on every OS without the need to install any extra modules. all the requirements are listed within `requirements.txt` file which will be copied and installed in your docker container. 
 For this part of the work ( Docker virtualisation of Airflow environment ) I used this [amazing work](https://github.com/marshall7m/data-engineering-capstone).
+
 To launch Airflow UI and run DAG:
-    - Launch Docker
-    - Change to airflow directory from within repo: `cd airflow`
-    - Build Docker images: `docker build -t my-airflow .`
-    - Compose Docker Container: `docker-compose up`
-    - Go to http://localhost:8080/ on your web browser
-    - Toggle DAG to ON
+- Launch Docker
+- Change to airflow directory from within repo: `cd airflow`
+- Build Docker images: `docker build -t my-airflow .`
+- Compose Docker Container: `docker-compose up`
+- Go to http://localhost:8080/ on your web browser
+- Toggle DAG to ON
     
 ## Repo Directories and Files Dictionary
 `airflow/dags/`:  Dag file that glues together the data pipeline
