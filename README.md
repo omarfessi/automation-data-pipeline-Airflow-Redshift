@@ -26,3 +26,31 @@ NODE_TYPE           = dc2.large
 ```
 - !!! Do not to clean up the AWS resources in the buttom of the notebook 
 - You may encounter inbound rules issues when using `psycopg2` to create connexion with Redshift, If so make sure to add a new inbound rule of type Redshift, port range 5439, and your IP adress as source.
+## Docker image for Airflow dependencies 
+As Airflow continues to develop and becomes hard to keep its versions and dependencies stable, I choosed not to install Airflow, rather I use a Docker version of it to wrap up all its dependencies and make Aiflow works on every OS without the need to install any extra modules. all the requirements are listed within `requirements.txt` file which will be copied and installed in your docker container. 
+For this part of the work ( Docker virtualisation of Airflow environment ) I used this [amazing work](https://github.com/marshall7m/data-engineering-capstone).
+To launch Airflow UI and run DAG:
+    - Launch Docker
+    - Change to airflow directory from within repo: `cd airflow`
+    - Build Docker images: `docker build -t my-airflow .`
+    - Compose Docker Container: `docker-compose up`
+    - Go to http://localhost:8080/ on your web browser
+    - Toggle DAG to ON
+    
+## Repo Directories and Files Dictionary
+`airflow/dags/`:  Dag file that glues together the data pipeline
+
+`airflow/plugins/operators/`: Custom built operators and operator queries used for ETL pipeline
+
+`airflow/config/airflow.cfg` : Airflow configuration file
+
+`airflow/scripts/entrypoint.sh`: Initializes Airflow connections, webserver, and scheduler.
+
+`airflow/docker-compose.yml`: Creates Docker container for Postgres and Airflow webserver
+
+`airflow/Dockerfile`: Builds Docker image with needed python packages and configuration files
+
+`IaC.ipynb`: IaC (infrastructure as code) notebook for Redshift cluster management
+
+
+
