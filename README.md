@@ -45,7 +45,9 @@ To launch Airflow UI and run DAG:
 
 `airflow/plugins/operators/create_tables.py`: Custom operator to create tables in Redshift
 
-`airflow/plugins/operators/create_sql_statements.py`: Create table statements used in `airflow/plugins/operators/create_tables.py`
+`airflow/plugins/operators/create_sql_statements.py`: Create table statements used in ( `airflow/plugins/operators/create_tables.py`)
+
+`airflow/plugins/operators/stage_redshift.py`: Custom operator to load staging tables in Redshift
 
 `airflow/config/airflow.cfg` : Airflow configuration file
 
