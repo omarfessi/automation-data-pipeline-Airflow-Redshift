@@ -3,7 +3,7 @@ from airflow import DAG
 from datetime import timedelta
 from datetime import datetime 
 
-from airflow.operators import CreateTables
+from airflow.operators import CreateTablesOperator
 from airflow.operators import StageToRedshiftOperator
 
 
@@ -24,7 +24,7 @@ dag=DAG('main_dag',
 
 start_operator=DummyOperator(task_id='Begin_execution', dag=dag)
 
-create_all_tables=CreateTables(
+create_all_tables=CreateTablesOperator(
 	task_id='create_all_tables',
 	redshift_conn_id='redshift',
 	dag=dag)

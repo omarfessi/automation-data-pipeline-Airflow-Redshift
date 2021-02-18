@@ -2,10 +2,10 @@ from airflow.models import BaseOperator
 from airflow.hooks.postgres_hook import PostgresHook
 import create_sql_statements
 
-class CreateTables(BaseOperator):
+class CreateTablesOperator(BaseOperator):
 	ui_color='#0D70F7'
 	def __init__(self, redshift_conn_id='', *args, **kwargs):
-		super(CreateTables, self).__init__(*args, **kwargs)
+		super(CreateTablesOperator, self).__init__(*args, **kwargs)
 		self.redshift_conn_id=redshift_conn_id
 
 	def execute ( self, context):

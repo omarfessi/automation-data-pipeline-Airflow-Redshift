@@ -7,4 +7,4 @@ import operators
 #defining the plugin class 
 class ProjectPlugin(AirflowPlugin):
 	name = 'project_plugin'
-	operators = [operators.CreateTables, operators.StageToRedshiftOperator]
+	operators = [operators.CreateTablesOperator, operators.StageToRedshiftOperator]
