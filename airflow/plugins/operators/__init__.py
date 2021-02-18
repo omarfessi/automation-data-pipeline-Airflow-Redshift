@@ -1,2 +1,3 @@
 from operators.create_tables import CreateTables 
-__all__=['CreateTables']
+from operators.stage_redshift import StageToRedshiftOperator
+__all__ = ['CreateTables', 'StageToRedshiftOperator']

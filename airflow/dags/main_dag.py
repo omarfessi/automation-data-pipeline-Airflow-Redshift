@@ -2,7 +2,9 @@ from airflow.operators.dummy_operator import DummyOperator
 from airflow import DAG
 from datetime import timedelta
 from datetime import datetime 
+
 from airflow.operators import CreateTables
+from airflow.operators import StageToRedshiftOperator
 
 
 default_args = {
@@ -26,3 +28,27 @@ create_all_tables=CreateTables(
 	task_id='create_all_tables',
 	redshift_conn_id='redshift',
 	dag=dag)
+
+stage_events_to_redshift = StageToRedshiftOperator(
+	task_id='load_stage_events',
+	dag=dag,
+	redshift_conn_id='redshift',
+	aws_credentials_id='aws_credentials',
+	s3_bucket='udacity-dend',
+	s3_key='log_data',
+	destination_table='staging_songs',
+	format_as_json='s3://udacity-dend/log_json_path.json')
+
+stage_songs_to_redshift = StageToRedshiftOperator(
+	task_id='load_stage_songs',
+	dag=dag,
+	redshift_conn_id='redshift',
+	aws_credentials_id='aws_credentials',
+	s3_bucket='udacity-dend',
+	s3_key='song_data',
+	destination_table='staging_songs',
+	format_as_json='auto')
+
+
+start_operator >> create_all_tables 
+create_all_tables >> [stage_events_to_redshift, stage_songs_to_redshift]
