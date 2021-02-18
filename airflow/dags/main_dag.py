@@ -5,8 +5,9 @@ from datetime import datetime
 
 from airflow.operators import CreateTablesOperator
 from airflow.operators import StageToRedshiftOperator
+from airflow.operators import LoadFactOperator
 
-
+from helpers import SqlQueries
 default_args = {
 	'owner':'Omar',
 	'start_date':datetime(2019,1,12),
@@ -49,6 +50,16 @@ stage_songs_to_redshift = StageToRedshiftOperator(
 	destination_table='staging_songs',
 	format_as_json='auto')
 
+load_songplays_table = LoadFactOperator(
+	task_id='load_songplays_fact_table',
+	dag=dag,
+	dimension_table='songplays',
+	redshift_conn_id='redshift',
+	delete_before_insert=True,
+	sql_stmt=SqlQueries.songplay_table_insert
+	)
+
 
 start_operator >> create_all_tables 
 create_all_tables >> [stage_events_to_redshift, stage_songs_to_redshift]
+[stage_events_to_redshift, stage_songs_to_redshift] >> load_songplays_table
