@@ -39,9 +39,13 @@ To launch Airflow UI and run DAG:
 - Toggle DAG to ON
     
 ## Repo Directories and Files Dictionary
-`airflow/dags/`:  Dag file that glues together the data pipeline
+`airflow/dags/`:  Dag file that glues together the data pipeline ( `main_dag.py` ) 
 
-`airflow/plugins/operators/`: Custom built operators and operator queries used for ETL pipeline
+`airflow/plugins/operators/`: Custom built operators and operator queries used for ETL pipeline 
+
+`airflow/plugins/operators/create_tables.py`: Custom operator to create tables in Redshift
+
+`airflow/plugins/operators/create_sql_statements.py`: Create table statements used in `airflow/plugins/operators/create_tables.py`
 
 `airflow/config/airflow.cfg` : Airflow configuration file
 
