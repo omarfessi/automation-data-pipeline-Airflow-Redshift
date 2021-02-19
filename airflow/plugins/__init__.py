@@ -8,5 +8,9 @@ import helpers
 #defining the plugin class 
 class ProjectPlugin(AirflowPlugin):
 	name = 'project_plugin'
-	operators = [operators.CreateTablesOperator, operators.StageToRedshiftOperator, operators.LoadFactOperator]
+	operators = [operators.CreateTablesOperator, \
+	operators.StageToRedshiftOperator, \
+	operators.LoadFactOperator, \
+	operators.LoadDimensionOperator]
+	
 	helpers = [helpers.SqlQueries]

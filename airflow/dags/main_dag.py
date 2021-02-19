@@ -6,6 +6,7 @@ from datetime import datetime
 from airflow.operators import CreateTablesOperator
 from airflow.operators import StageToRedshiftOperator
 from airflow.operators import LoadFactOperator
+from airflow.operators import LoadDimensionOperator
 
 from helpers import SqlQueries
 default_args = {
@@ -59,7 +60,16 @@ load_songplays_table = LoadFactOperator(
 	sql_stmt=SqlQueries.songplay_table_insert
 	)
 
+load_users_table = LoadDimensionOperator(
+	task_id='load_users_dim_table',
+	dag=dag,
+	dimension_table='users',
+	redshift_conn_id='redshift',
+	delete_before_insert=True,
+	sql_stmt=SqlQueries.user_table_insert)
+
 
 start_operator >> create_all_tables 
 create_all_tables >> [stage_events_to_redshift, stage_songs_to_redshift]
 [stage_events_to_redshift, stage_songs_to_redshift] >> load_songplays_table
+[stage_events_to_redshift, stage_songs_to_redshift] >> load_users_table
