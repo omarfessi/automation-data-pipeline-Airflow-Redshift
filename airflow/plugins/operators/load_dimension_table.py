@@ -1,5 +1,6 @@
 from airflow.models import BaseOperator
 class LoadDimensionOperator ( BaseOperator):
+	ui_color='#F98866'
 	def __init__(self, 
 		dimension_table='', 
 		redshift_conn_id='',
