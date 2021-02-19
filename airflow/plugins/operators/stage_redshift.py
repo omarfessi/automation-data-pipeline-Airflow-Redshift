@@ -45,7 +45,7 @@ class StageToRedshiftOperator(BaseOperator):
 					  ACCESS_KEY_ID '{credentials.access_key}' \
 					  SECRET_ACCESS_KEY '{credentials.secret_key}'\
 					  FORMAT AS JSON '{self.format_as_json}'  ")
-		record=redshift.get_records(f"COUNT (*) FROM {self.destination_table}")
+		record=redshift.get_records(f"SELECT COUNT (*) FROM {self.destination_table}")
 		self.log.info(f"Copying_{self.destination_table}_ data is done with success with {record[0][0]} records")
 
 

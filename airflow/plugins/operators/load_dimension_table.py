@@ -1,4 +1,5 @@
 from airflow.models import BaseOperator
+from airflow.hooks.postgres_hook import PostgresHook
 class LoadDimensionOperator ( BaseOperator):
 	ui_color='#F98866'
 	def __init__(self, 
