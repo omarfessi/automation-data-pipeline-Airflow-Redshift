@@ -7,6 +7,7 @@ from airflow.operators import CreateTablesOperator
 from airflow.operators import StageToRedshiftOperator
 from airflow.operators import LoadFactOperator
 from airflow.operators import LoadDimensionOperator
+from airflow.operators import DataQualityOperator
 
 from helpers import SqlQueries
 default_args = {
@@ -24,7 +25,7 @@ dag=DAG('main_dag',
 		catchup=False)
 
 
-start_operator=DummyOperator(task_id='Begin_execution', dag=dag)
+start_operator=DummyOperator(task_id='begin_execution', dag=dag)
 
 create_all_tables=CreateTablesOperator(
 	task_id='create_all_tables',
@@ -68,8 +69,42 @@ load_users_table = LoadDimensionOperator(
 	delete_before_insert=True,
 	sql_stmt=SqlQueries.user_table_insert)
 
+load_songs_table = LoadDimensionOperator(
+	task_id='load_songs_dim_table',
+	dag=dag,
+	dimension_table='songs',
+	redshift_conn_id='redshift',
+	delete_before_insert=True,
+	sql_stmt=SqlQueries.song_table_insert)
+
+load_artists_table = LoadDimensionOperator(
+	task_id='load_artists_dim_table',
+	dag=dag,
+	dimension_table='artists',
+	redshift_conn_id='redshift',
+	delete_before_insert=True,
+	sql_stmt=SqlQueries.artist_table_insert)
+
+load_time_table = LoadDimensionOperator (
+	task_id = 'load_time_dim_table',
+	dag=dag,
+	dimension_table='time',
+	redshift_conn_id='redshift',
+	delete_before_insert=True,
+	sql_stmt=SqlQueries.time_table_insert)
+
+run_quality_checks = DataQualityOperator(
+	task_id='run_data_quality_checks',
+	dag=dag,
+	redshift_conn_id='redshift',
+	table_names=['songplays', 'users', 'songs', 'artists', 'time'])
+
+end_operator = DummyOperator (
+	task_id='end_execution', dag=dag)
 
 start_operator >> create_all_tables 
 create_all_tables >> [stage_events_to_redshift, stage_songs_to_redshift]
 [stage_events_to_redshift, stage_songs_to_redshift] >> load_songplays_table
-[stage_events_to_redshift, stage_songs_to_redshift] >> load_users_table
+load_songplays_table >> [load_users_table, load_songs_table, load_artists_table, load_time_table]
+[load_users_table, load_songs_table, load_artists_table, load_time_table] >> run_quality_checks
+run_quality_checks >> end_operator

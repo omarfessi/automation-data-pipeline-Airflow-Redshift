@@ -11,6 +11,7 @@ class ProjectPlugin(AirflowPlugin):
 	operators = [operators.CreateTablesOperator, \
 	operators.StageToRedshiftOperator, \
 	operators.LoadFactOperator, \
-	operators.LoadDimensionOperator]
+	operators.LoadDimensionOperator, \
+	operators.DataQualityOperator]
 	
 	helpers = [helpers.SqlQueries]
