@@ -59,5 +59,20 @@ To launch Airflow UI and run DAG:
 
 `IaC.ipynb`: IaC (infrastructure as code) notebook for Redshift cluster management
 
+## Project Execution Steps
+1) Open the IaC.ipynb and execute the cells until you have a cluster ready
+2) Go back to how to launch Airflow UI and before you toggle DAG to ON create Airflow connexion under Admin : 
+* Conn Id : `redshift`
+* Conn Type : `Postgres`
+* Host : ( the endpoint you get from the jupyter notebook )
+* Schema : my-database ( look at the Redshift_configuration.cfg)
+* Login : 
+* Password : 
+* Port : 5439
+3) Create a new connexion to access AWS S3 when copying data from S3 to Redshift : 
+* Conn Id : `aws_credentials`
+* Conn Type : `Amazon Web Services`
+
+
 
 
